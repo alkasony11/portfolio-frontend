@@ -1,0 +1,9 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 60px; /* Adjust this value based on your navbar height */
+}
+
+section {
+  scroll-margin-top: 60px; /* Adjust this value based on your navbar height */
+}
+
