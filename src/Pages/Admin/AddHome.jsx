@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AdminHeader from '../../Components/AdminHeader';
+import { API_ENDPOINTS } from '../../config/api';
 
 const AddHome = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const AddHome = () => {
     profileImage: null,
     socialLinks: [{ platform: "", url: "" }]
   });
+  const [existingImagePath, setExistingImagePath] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,16 +18,17 @@ const AddHome = () => {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/portfolio/home', { withCredentials: true });
+        const response = await axios.get(API_ENDPOINTS.HOME, { withCredentials: true });
         console.log("API Response:", response.data);
         if (response.data) {
           const { name, title, profileImage, socialLinks } = response.data;
           setFormData({
             name: name || "",
             title: title || "",
-            profileImage: profileImage || null,
+            profileImage: null, // Don't set the file object, just track the path
             socialLinks: socialLinks?.length ? socialLinks : [{ platform: "", url: "" }]
           });
+          setExistingImagePath(profileImage || null);
         }
       } catch (error) {
         console.error("Error fetching home data:", error);
@@ -66,10 +69,13 @@ const AddHome = () => {
       formDataToSend.append('title', homeData.title);
       if (homeData.profileImage) {
         formDataToSend.append('profileImage', homeData.profileImage);
+      } else if (existingImagePath) {
+        // If no new image is selected but we have an existing image, send the existing path
+        formDataToSend.append('existingImagePath', existingImagePath);
       }
       formDataToSend.append('socialLinks', JSON.stringify(homeData.socialLinks));
 
-      await axios.post('http://localhost:5000/api/portfolio/home', formDataToSend, {
+      await axios.post(API_ENDPOINTS.HOME, formDataToSend, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });
@@ -133,7 +139,19 @@ const AddHome = () => {
                       />
                     </div>
                     {formData.profileImage && (
-                      <p>Current Image:{formData.profileImage.name}</p>
+                      <p className="help is-success">New image selected: {formData.profileImage.name}</p>
+                    )}
+                    {existingImagePath && !formData.profileImage && (
+                      <div className="mt-2">
+                        <p className="help is-info">Current image:</p>
+                        <figure className="image is-128x128">
+                          <img
+                            src={`${API_ENDPOINTS.BASE}/${existingImagePath.replace(/\\/g, '/')}`}
+                            alt="Current profile"
+                            style={{ objectFit: 'cover', borderRadius: '8px' }}
+                          />
+                        </figure>
+                      </div>
                     )}
                   </div>
 

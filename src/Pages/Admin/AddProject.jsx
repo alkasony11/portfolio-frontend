@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminHeader from '../../Components/AdminHeader';
+import { API_ENDPOINTS } from '../../config/api';
 
 const AddProject = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const AddProject = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/portfolio/projects');
+      const response = await fetch(API_ENDPOINTS.PROJECTS);
       const data = await response.json();
       setProjects(data);
     } catch (error) {
@@ -57,8 +58,8 @@ const AddProject = () => {
 
     try {
       const url = editingId
-        ? `http://localhost:5000/api/portfolio/projects/${editingId}`
-        : "http://localhost:5000/api/portfolio/projects";
+        ? `${API_ENDPOINTS.PROJECTS}/${editingId}`
+        : API_ENDPOINTS.PROJECTS;
       const method = editingId ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -90,14 +91,14 @@ const AddProject = () => {
       liveLink: project.liveLink,
       image: null,
     });
-    setImagePreview(`http://localhost:5000/${project.image?.replace(/\\/g, '/')}`);
+    setImagePreview(`${API_ENDPOINTS.BASE}/${project.image?.replace(/\\/g, '/')}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/portfolio/projects/${id}`, {
+        const response = await fetch(`${API_ENDPOINTS.PROJECTS}/${id}`, {
           method: 'DELETE'
         });
 
@@ -244,7 +245,7 @@ const AddProject = () => {
                     <div className="box has-background-white" style={{ border: '2px solid black', borderRadius: '8px', textAlign: 'center' }}>
                       <div className="card-image">
                         <figure className="image is-16by9">
-                          <img src={`http://localhost:5000/${project.image?.replace(/\\/g, '/')}`} alt={project.name} />
+                          <img src={`${API_ENDPOINTS.BASE}/${project.image?.replace(/\\/g, '/')}`} alt={project.name} />
                         </figure>
                       </div>
                       <div className="card-content">

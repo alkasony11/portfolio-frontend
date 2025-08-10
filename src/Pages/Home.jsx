@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "../components/Header";
-import Hero from "../components/Hero";
-import About from "../components/About";
-import Certificates from "../components/Certificates";
-import Projects from "../components/Projects";
-import Contact from "../components/Contact";
-import Footer from "../components/Footer";
+import Header from "../Components/Header";
+import Hero from "../Components/Hero";
+import About from "../Components/About";
+import Certificates from "../Components/Certificates";
+import Projects from "../Components/Projects";
+import Contact from "../Components/Contact";
+import Footer from "../Components/Footer";
 
 
 

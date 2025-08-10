@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AdminHeader from '../../Components/AdminHeader';
+import { API_ENDPOINTS } from '../../config/api';
 
 const AddCertificate = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ const AddCertificate = () => {
 
   const fetchCertificates = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/portfolio/certificates');
+      const response = await axios.get(API_ENDPOINTS.CERTIFICATES);
       if (response.data) {
         setCertificates(response.data);
       }
@@ -62,13 +63,13 @@ const AddCertificate = () => {
 
       if (editingId) {
         // Update existing certificate
-        await axios.put(`http://localhost:5000/api/portfolio/certificates/${editingId}`, formDataToSend, {
+        await axios.put(`${API_ENDPOINTS.CERTIFICATES}/${editingId}`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Certificate updated successfully!");
       } else {
         // Add new certificate
-        await axios.post("http://localhost:5000/api/portfolio/certificates", formDataToSend, {
+        await axios.post(API_ENDPOINTS.CERTIFICATES, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Certificate added successfully!");
@@ -93,13 +94,13 @@ const AddCertificate = () => {
       credentialUrl: certificate.credentialUrl,
       image: null,
     });
-    setImagePreview(`http://localhost:5000/${certificate.image?.replace(/\\/g, '/')}`);
+    setImagePreview(`${API_ENDPOINTS.BASE}/${certificate.image?.replace(/\\/g, '/')}`);
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this certificate?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/portfolio/certificates/${id}`);
+        await axios.delete(`${API_ENDPOINTS.CERTIFICATES}/${id}`);
         alert("Certificate deleted successfully!");
         fetchCertificates(); // Re-fetch certificates after deletion
       } catch (error) {
@@ -216,7 +217,7 @@ const AddCertificate = () => {
                       <div className="column is-3">
                         <figure className="image is-square">
                           <img 
-                            src={`http://localhost:5000/${certificate.image?.replace(/\\/g, '/')}`} 
+                            src={`${API_ENDPOINTS.BASE}/${certificate.image?.replace(/\\/g, '/')}`}
                             alt={certificate.name}
                             style={{ objectFit: 'cover' }}
                           />

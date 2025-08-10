@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminHeader from '../../Components/AdminHeader';
+import { API_ENDPOINTS } from '../../config/api';
 
 const AddContact = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,29 @@ const AddContact = () => {
     phone: "",
     socialMedia: [{ platform: "", url: "" }]
   });
+
+  // Fetch existing contact data when component loads
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        const response = await fetch(API_ENDPOINTS.CONTACT);
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            setFormData({
+              email: data.email || "",
+              phone: data.phone || "",
+              socialMedia: data.socialMedia?.length ? data.socialMedia : [{ platform: "", url: "" }]
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching contact data:", err);
+      }
+    };
+
+    fetchContactData();
+  }, []);
 
   const handleSocialMediaChange = (index, field, value) => {
     const newSocialMedia = [...formData.socialMedia];
@@ -24,7 +48,7 @@ const AddContact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/portfolio/contact', {
+      const response = await fetch(API_ENDPOINTS.CONTACT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

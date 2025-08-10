@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AdminHeader from '../../Components/AdminHeader';
+import { API_ENDPOINTS } from '../../config/api';
 
 const AddAbout = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +17,7 @@ const AddAbout = () => {
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/portfolio/about");
+        const response = await axios.get(API_ENDPOINTS.ABOUT);
         if (response.data) {
           setFormData(response.data);
         }
@@ -64,7 +65,7 @@ const AddAbout = () => {
         skills: formData.skills
       };
 
-      await axios.post('http://localhost:5000/api/portfolio/about', aboutData, {
+      await axios.post(API_ENDPOINTS.ABOUT, aboutData, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true
       });

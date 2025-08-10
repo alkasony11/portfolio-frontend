@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_ENDPOINTS } from "../config/api";
 
 const Certificates = () => {
   const [certificates, setCertificates] = useState([]);
@@ -8,7 +9,7 @@ const Certificates = () => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/portfolio/certificates");
+        const response = await fetch(API_ENDPOINTS.CERTIFICATES);
         if (!response.ok) {
           throw new Error("Failed to fetch certificates");
         }
@@ -42,7 +43,7 @@ const Certificates = () => {
               <div className="box has-background-white" style={{ border: "2px solid black", borderRadius: "8px", textAlign: "center" }}>
                 <div className="card-image">
                   <figure className="image">
-                    <img src={`http://localhost:5000/${certificate.image?.replace(/\\/g, '/')}`} alt={certificate.name} style={{ maxWidth: "100%", height: "auto" }} />
+                    <img src={`${API_ENDPOINTS.BASE}/${certificate.image?.replace(/\\/g, '/')}`} alt={certificate.name} style={{ maxWidth: "100%", height: "auto" }} />
                   </figure>
                 </div>
                 <div className="card-content">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../config/api";
 
 const AdminHeader = () => {
   const navigate = useNavigate();
@@ -7,7 +8,7 @@ const AdminHeader = () => {
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
     // Call your logout API endpoint if needed
-    fetch('http://localhost:3000/api/auth/logout', {
+    fetch(`${API_ENDPOINTS.BASE}/api/auth/logout`, {
       method: 'POST',
       credentials: 'include'
     }).finally(() => {
@@ -33,7 +34,7 @@ const AdminHeader = () => {
               { name: "Certificates", path: "/admin/addcertificates" },
               { name: "Projects", path: "/admin/addprojects" },
               { name: "Contact", path: "/admin/addcontact" },
-              { name: "View Site", path: "/" }
+              { name: "View Portfolio", path: "/" }
             ].map((item) => (
               <Link 
                 key={item.name} 
@@ -45,7 +46,7 @@ const AdminHeader = () => {
             ))}
             <button 
               onClick={handleLogout}
-              className="navbar-item button is-danger is-light ml-4"
+              className="navbar-item button is-danger ml-4"
               style={{ marginTop: '0.5rem' }}
             >
               Logout

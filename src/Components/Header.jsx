@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -29,6 +30,22 @@ const Header = () => {
                 {item}
               </a>
             ))}
+            <Link
+              to="/admin"
+              className="navbar-item has-text-grey is-size-6"
+              style={{
+                fontWeight: '500',
+                opacity: '0.7',
+                transition: 'opacity 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.target.style.opacity = '1'}
+              onMouseLeave={(e) => e.target.style.opacity = '0.7'}
+              title="Admin Access"
+            >
+              <span className="icon is-small">
+                <i className="fas fa-cog"></i>
+              </span>
+            </Link>
           </div>
         </div>
       </div>
